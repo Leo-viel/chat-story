@@ -77,7 +77,8 @@
   object-fit: cover;
 }
     #next-btn {
-      display: block;
+  display: inline-block;
+  float: left;
       margin: 1rem auto;
       padding: 0.75rem 2rem;
       font-size: 2.3rem;
@@ -190,7 +191,7 @@
 <button id="next-btn" onclick="nextStep()">下一句（Enter / Z / 點擊畫面）</button>
 
 <div style="text-align:center; margin-top:1rem;">
-  <button onclick="replayChapter()" style="margin-bottom:0.5rem; padding:0.5rem 1rem; font-size:1rem; border:none; border-radius:0.5rem; background:#6b7280; color:white; cursor:pointer;">🔁 重新觀看本章</button><br>
+  <button onclick="replayChapter()" style="margin-bottom:0.5rem; padding:0.5rem 1rem; font-size:1.5rem;font-weight: bold; border:none; border-radius:0.5rem; background:#6b7280; color:white; cursor:pointer;">🔁 重新觀看本章</button><br>
   <label for="chapterSelect">📖 選擇章節：</label>
   <select id="chapterSelect" onchange="changeChapter(this.value)">
     <option value="chapter1">第1章</option>
