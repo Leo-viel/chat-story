@@ -1,0 +1,452 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Noto Sans TC', sans-serif;
+      background: url('bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 1rem;
+    }
+    .chat-box {
+      max-width: 700px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.85);
+      padding: 1rem;
+      border-radius: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+      height: 90vh;
+      overflow-y: auto;
+    }
+    .msg-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin: 0.75rem 0;
+}
+
+.msg-container.compact {
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+    .msg {
+  padding: 1rem 1.25rem;
+  border-radius: 2rem;
+  max-width: 60%;
+  word-wrap: break-word;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  min-width: 35px;
+}
+    .msg.ai {
+  background: #6cc8f0;
+  color: white;
+}
+    .msg.painter {
+  background: #f97316;
+  color: white;
+}
+    .msg.player {
+  background: #3b82f6;
+  color: white;
+}
+    .msg-container.left {
+      flex-direction: row;
+      justify-content: flex-start;
+    }
+    .msg-container.right {
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+    }
+    .narrator {
+      text-align: center;
+      background: #facc15;
+      color: #1f2937;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      font-size: 1.1rem;
+      max-width: 80%;
+      margin: 1rem auto;
+    }
+    .avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+    #next-btn {
+      display: block;
+      margin: 1rem auto;
+      padding: 0.75rem 2rem;
+      font-size: 1.2rem;
+      background: #10b981;
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .msg, .narrator {
+      animation: fadeInUp 0.3s ease-out;
+    }
+
+    @keyframes shake {
+      0% { transform: translateX(0); }
+      10% { transform: translateX(-10px); }
+      20% { transform: translateX(10px); }
+      30% { transform: translateX(-10px); }
+      40% { transform: translateX(10px); }
+      50% { transform: translateX(-6px); }
+      60% { transform: translateX(6px); }
+      70% { transform: translateX(-3px); }
+      80% { transform: translateX(3px); }
+      90% { transform: translateX(0px); }
+      100% { transform: translateX(0); }
+    }
+    .effect-shake {
+      animation: shake 0.4s ease-in-out;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+    .effect-bounce {
+      animation: bounce 0.5s ease;
+    }
+
+    @keyframes explode {
+      0% { transform: scale(1); opacity: 1; }
+      25% { transform: scale(1.1); background-color: red; color: white; }
+      50% { transform: scale(1.2); background-color: darkred; color: white; }
+      75% { transform: scale(1.1); background-color: red; color: white; }
+      100% { transform: scale(1); }
+    }
+    .effect-angry {
+      animation: explode 0.4s ease-in-out;
+    }
+    .msg.left {
+  color: black;
+}
+  .msg.right.main-character {
+    color: white;
+  }
+  .name-tag {
+  font-size: 0.9rem;
+  font-weight: bold;
+  margin: 0 0.5rem;
+  color: #374151;
+}
+
+.msg-container.left .name-tag {
+  text-align: left;
+  margin-left: 60px;
+}
+
+.msg-container.right .name-tag {
+  text-align: right;
+  margin-right: 60px;
+}
+  .avatar-wrap {
+  width: 60px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 72px;
+}
+.outer-wrap.left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.outer-wrap.right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.outer-wrap {
+  width: 100%;
+}
+
+</style>
+</head>
+<body>
+<audio id="bgm" autoplay loop>
+  <source src="bgm.mp3" type="audio/mpeg">
+  您的瀏覽器不支援音樂播放。
+</audio>
+
+<div class="chat-box" id="chat"></div>
+<button id="next-btn" onclick="nextStep()">下一句（Enter / Z / 點擊畫面）</button>
+
+<div style="text-align:center; margin-top:1rem;">
+  <button onclick="replayChapter()" style="margin-bottom:0.5rem; padding:0.5rem 1rem; font-size:1rem; border:none; border-radius:0.5rem; background:#6b7280; color:white; cursor:pointer;">🔁 重新觀看本章</button><br>
+  <label for="chapterSelect">📖 選擇章節：</label>
+  <select id="chapterSelect" onchange="changeChapter(this.value)">
+    <option value="chapter1">第1章</option>
+    <option value="chapter2">第2章</option>
+  </select>
+</div>
+
+<script>
+  const senderNames = {
+    ai: '救贖機關',
+    player: '人類大姊姊',
+    painter: '畫家爺爺'
+  };
+  const avatarMap = {
+  ai: {
+    default: 'avatar_ai.png',
+    happy: 'avatar_ai_happy.png',
+    angry: 'avatar_ai_angry.png',
+    sad: 'avatar_ai_sad.png'
+  },
+  player: {
+    default: 'avatar_player.png',
+    happy: 'avatar_player_happy.png',
+    angry: 'avatar_player_angry.png'
+  },
+  painter: {
+    default: 'avatar_painter.png',
+    proud: 'avatar_painter_proud.png',
+    laughing: 'avatar_painter_laugh.png'
+  }
+};
+
+  const colorMap = {
+  ai: '#6366f1',         // 藍紫色，具科技感
+  player: '#3b82f6',     // 主角藍
+  painter: '#f97316'     // 藝術家橘
+};
+
+  const chapters = {
+    chapter1: [
+      { sender: 'narrator', text: '[main:player]' },
+      { sender: 'narrator', text: '某天救贖機關在油畫家的邀請下擔任模特兒。' },
+      { sender: 'narrator', text: '人類大姊姊聽到這個消息後便趕到畫家的家裡，看到救贖機關參考旁邊舊世界維納斯雕像的照片，擺起姿勢。' },
+      { sender: 'narrator', text: '當然還是全裸的。' },
+      { sender: 'player', text: '[effect-shake]畫家爺爺，你在搞甚麼！' },
+      { sender: 'painter', text: '[effect-bounce]還能做甚麼，當然是文藝復興運動啊！舊世界的文物差不多都被毀了，所以我打算弄個精神傳承之物啊！你看看這個機器人多美啊，不就剛好可以做為維納斯的模特兒嗎？' },
+      { sender: 'player', text: '[effect-angry]真的嗎？你不會只是單純想看裸體，所以才這樣說吧？' },
+      { sender: 'painter', text: '真愛胡說八道，裸體有誰不愛看呢？藝術是自由的，而這機器人說「穿衣服是不自由」，天啊，我有理由不作畫嗎？這是我與她的靈魂共鳴啊！' },
+      { sender: 'player', text: '是這樣嗎？救贖機關？你沒被奇怪的話誆騙吧？' },
+      { sender: 'ai', text: '畫家爺爺只是要求我按照照片上的雕像擺姿勢而已，沒別的要求。倒是你剛剛說的靈魂，我也有靈魂嗎？' },
+      { sender: 'painter', text: '[effect-bounce]哈哈，當然有啊，凡是熱愛自由與藝術的人，都有熱情的靈魂！' },
+      { sender: 'player', text: '這傢伙算熱情嗎？臉上毫無笑意啊！' },
+      { sender: 'painter', text: '別被表情蒙騙了！願意為一件事去花費精力或者...電力，這就足以說明她的熱誠！是的，我能感受得到她的熾熱心跳！' },
+      { sender: 'ai', text: '但我沒有心臟？' },
+      { sender: 'ai', text: '？？？' },
+      { sender: 'painter', text: '這就是藝術家啊！想像力可是能突破宇宙法則的！來吧，讓我們一起完成這個承載人類記憶的藝術品吧！' },
+      { sender: 'player', text: '但照片上的維納斯沒有雙手耶' },
+      { sender: 'painter', text: '這就是樂趣所在了，這個留白，反而能發揮各種創意呢！不如...機器人小姐，你選擇一個手臂姿勢如何？' },
+      { sender: 'ai', text: '由我自由發揮嗎？我試試' },
+      { sender: 'narrator', text: '接著救贖機關開始擺起各種手臂姿勢，似乎陷入思考之中。' },
+      { sender: 'player', text: '爺爺，你這招不錯啊，我難得看到她會陷入苦思啊' },
+      { sender: 'painter', text: '創作自然就會遇到瓶頸，機器人也不例外。' },
+      { sender: 'narrator', text: '[goto:chapter2]' }
+    ],
+    chapter2: [
+      { sender: 'narrator', text: '[main:ai]' },
+      { sender: 'narrator', text: '【第2章開始】畫家遞上畫筆給救贖機關。' },
+      { sender: 'painter', text: '現在輪到妳來畫我了！' },
+      { sender: 'ai', text: '要我作畫嗎？這是一項有挑戰性的任務。' },
+      { sender: 'ai', text: '我可以擺出千手觀音,那是目前可能最大自由度。' },
+      { sender: 'ai', text: '我可以擺出千手觀音,那是目前可能最大自由度。' },
+      { sender: 'ai', text: '我可以擺出千手觀音,那是目前可能最大自由度。' },
+      { sender: 'ai', text: '我可以擺出千手觀音,那是目前可能最大自由度。' },
+      { sender: 'ai', text: '我可以擺出千手觀音,那是目前可能最大自由度。' },
+      { sender: 'ai', text: '我可以擺出千手觀音,那是目前可能最大自由度。' },
+    　 { sender: 'ai', text: '我可以擺出千手觀音,那是目前可能最大自由度。' },
+      { sender: 'painter', text: '[effect-bounce]哈哈哈哈哈哈哈哈哈哈哈！' }
+    ]
+  };
+
+  let currentChapter = 'chapter1';
+  let mainCharacter = 'player';
+  let step = 0;
+
+  function changeChapter(chapter) {
+    currentChapter = chapter;
+    step = 0;
+    document.getElementById('chat').innerHTML = '';
+    nextStep();
+    document.getElementById('chapterSelect').value = chapter;
+  }
+
+  function nextStep() {
+    const steps = chapters[currentChapter];
+
+    if (step >= steps.length) {
+      alert("對話結束！");
+      return;
+    }
+
+    const chat = document.getElementById('chat');
+    const current = steps[step];
+
+    if (current.text.startsWith('[avatar:')) {
+  const match = current.text.match(/\[avatar:(.+?)\]/);
+  if (match) {
+    const expression = match[1];
+    if (typeof avatarMap[current.sender] === 'object') {
+      avatarMap[current.sender].default = avatarMap[current.sender][expression] || avatarMap[current.sender].default;
+    }
+  }
+  step++;
+      nextStep();
+      return;
+    } else if (current.text.startsWith('[bgm:')) {
+      const match = current.text.match(/\[bgm:(.+?)\]/);
+      if (match) {
+        const bgm = document.getElementById('bgm');
+        bgm.src = match[1];
+        bgm.play();
+      }
+      step++;
+      nextStep();
+      return;
+    } else if (current.text.startsWith('[goto:')) {
+      const match = current.text.match(/\[goto:(.+?)\]/);
+      if (match) {
+        currentChapter = match[1];
+        document.getElementById('chapterSelect').value = currentChapter;
+        step = 0;
+        chat.innerHTML = '';
+        nextStep();
+        return;
+      }
+    } else if (current.text.startsWith('[main:')) {
+      const match = current.text.match(/\[main:(.+?)\]/);
+      if (match) {
+        mainCharacter = match[1];
+      }
+      step++;
+      nextStep();
+      return;
+    }
+
+    if (current.sender === 'narrator') {
+      const notice = document.createElement('div');
+      notice.className = 'narrator';
+      notice.innerText = current.text;
+      chat.appendChild(notice);
+    } else {
+      const msgWrap = document.createElement('div');
+const position = current.sender === mainCharacter ? 'right' : 'left';
+msgWrap.className = `msg-container ${position}`;
+if (step > 0 && steps[step - 1].sender === current.sender) {
+  msgWrap.classList.add('compact');
+}
+
+      const msg = document.createElement('div');
+      let showName = true;
+      if (step > 0) {
+        const prev = steps[step - 1];
+        if (prev.sender === current.sender) {
+          showName = false;
+        }
+      }
+
+      
+      msg.className = `msg ${current.sender}`;
+      // 背景顏色改為統一由 CSS 控管，不在此覆蓋
+      if (position === 'right') {
+        msg.style.marginLeft = 'auto';
+        msg.style.borderTopRightRadius = '0';
+        msg.style.borderBottomLeftRadius = '2rem';
+      } else {
+        msg.style.borderTopLeftRadius = '0';
+        msg.style.borderBottomRightRadius = '2rem';
+      }
+      msg.classList.add(position);
+msg.classList.add(current.sender);
+if (position === 'right') {
+  msg.classList.add('main-character');
+}
+
+      const effectMatch = current.text.match(/^\[(effect-[a-z]+)\](.*)/);
+      if (effectMatch) {
+        msg.classList.add(effectMatch[1]);
+        msg.innerText = effectMatch[2];
+      } else {
+        msg.innerText = current.text;
+      }
+
+      const nameTag = document.createElement('div');
+nameTag.className = 'name-tag';
+nameTag.innerText = senderNames[current.sender] || current.sender;
+if (position === 'right') {
+  nameTag.style.textAlign = 'right';
+  nameTag.style.marginRight = '0px';
+} else {
+  nameTag.style.textAlign = 'left';
+  nameTag.style.marginLeft = '0px';
+}
+const outerWrap = document.createElement('div');
+outerWrap.className = `outer-wrap ${position}`;
+outerWrap.appendChild(nameTag);
+outerWrap.appendChild(msgWrap);
+
+const avatarWrap = document.createElement('div');
+avatarWrap.style.display = 'flex';
+avatarWrap.style.flexDirection = 'column';
+avatarWrap.className = 'avatar-wrap';
+avatarWrap.style.width = '60px';
+
+const avatar = document.createElement('img');
+avatar.className = 'avatar';
+const avatarEntry = avatarMap[current.sender];
+if (typeof avatarEntry === 'string') {
+  avatar.src = avatarEntry;
+} else if (typeof avatarEntry === 'object') {
+  avatar.src = avatarEntry.default || 'default_avatar.png';
+} else {
+  avatar.src = 'default_avatar.png';
+}
+avatar.alt = '頭像';
+avatarWrap.appendChild(avatar);
+
+      msgWrap.appendChild(avatarWrap);
+msgWrap.appendChild(msg);
+      chat.appendChild(outerWrap);
+    }
+
+    chat.scrollTop = chat.scrollHeight;
+    step++;
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key.toLowerCase() === 'z') {
+      nextStep();
+    }
+  });
+
+  document.addEventListener('click', () => {
+    nextStep();
+  });
+
+  function replayChapter() {
+    step = 0;
+    document.getElementById('chat').innerHTML = '';
+    nextStep();
+  }
+// 動態建立主角角色樣式
+for (const role in colorMap) {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .msg.right.main-character.${role} {
+      background: ${colorMap[role]};
+      color: white;
+    }
+  `;
+  document.head.appendChild(style);
+}
+</script>
+</body>
+</html>
