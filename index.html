@@ -9,7 +9,7 @@
       padding: 1rem;
     }
     .chat-box {
-      max-width: 700px;
+      max-width: 50%;
       margin: auto;
       background: rgba(255, 255, 255, 0.85);
       padding: 1rem;
@@ -174,42 +174,40 @@
   width: 100%;
 }
 /* 響應式設計 */
-  @media screen and (max-width: 100px) {
-    .chat-box {
-      height: 70vh;
-      max-width: 100%;
-      padding: 1rem;
-      border-radius: 1rem;
-    }
-    .msg {
-      font-size: 1.3rem;
-      max-width: 90%;
-      padding: 1rem 1.25rem;
-    }
-    .narrator {
-      font-size: 1.2rem;
-      max-width: 95%;
-      padding: 0.75rem 1.25rem;
-    }
-    .name-tag {
-      font-size: 1rem;
-    }
-    #next-btn {
-      font-size: 1.3rem;
-      padding: 1rem 2.5rem;
-    }
-    .avatar {
-      width: 60px;
-      height: 60px;
-    }
-    .avatar-wrap {
-      width: 65px;
-    }
-    select, label, button {
-      font-size: 1.2rem;
-      padding: 0.75rem 1.5rem;
-    }
+  @media screen and (max-width: 600px) {
+  .chat-box {
+    padding: 0.75rem;
+    height: 88vh;
+    border-radius: 1rem;
   }
+  .msg {
+    font-size: 1.2rem;
+    max-width: 90%;
+    padding: 0.8rem 1rem;
+  }
+  .narrator {
+    font-size: 1.1rem;
+    padding: 0.6rem 1rem;
+  }
+  .name-tag {
+    font-size: 1rem;
+  }
+  .avatar {
+    width: 50px;
+    height: 50px;
+  }
+  .avatar-wrap {
+    width: 55px;
+  }
+  #next-btn {
+    font-size: 1.2rem;
+    padding: 0.9rem 2rem;
+  }
+  select, button, label {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+  }
+}
 </style>
 </head>
 <body>
