@@ -15,7 +15,7 @@
       padding: 1rem;
       border-radius: 1.5rem;
       box-shadow: 0 2px 12px rgba(0,0,0,0.2);
-      height: 70vh;
+      height: 80vh;
       overflow-y: auto;
     }
     .msg-container {
@@ -188,10 +188,10 @@
 </audio>
 
 <div class="chat-box" id="chat"></div>
-<button id="next-btn" onclick="nextStep()">下一句（Enter / Z / 點擊畫面）</button>
+<button id="next-btn" onclick="nextStep()">下一句（Z/點擊畫面）</button>
 
 <div style="text-align:center; margin-top:1rem;">
-  <button onclick="replayChapter()" style="margin-bottom:0.5rem; padding:0.5rem 1rem; font-size:1.5rem;font-weight: bold; border:none; border-radius:0.5rem; background:#6b7280; color:white; cursor:pointer;">🔁 重新觀看本章</button><br>
+  <button onclick="replayChapter()" style="margin-bottom:0.5rem; padding:0.5rem 1rem; font-size:2.3rem;font-weight: bold; border:none; border-radius:0.5rem; background:#6b7280; color:white; cursor:pointer;">🔁 重新觀看本章</button><br>
   <label for="chapterSelect">📖 選擇章節：</label>
   <select id="chapterSelect" onchange="changeChapter(this.value)">
     <option value="chapter1">第1章</option>
