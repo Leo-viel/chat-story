@@ -32,11 +32,11 @@
     .msg {
   padding: 1rem 1.25rem;
   border-radius: 2rem;
-  max-width: 60%;
+  max-width: 50%;
   word-wrap: break-word;
   font-size: 1.2rem;
   line-height: 1.6;
-  min-width: 35px;
+  min-width: 50px;
 }
     .msg.ai {
   background: #6cc8f0;
@@ -174,7 +174,37 @@
   width: 100%;
 }
 
-</style>
+@media screen and (max-width: 600px) {
+  .chat-box {
+    height: 85vh;
+    padding: 0.5rem;
+    border-radius: 1rem;
+    max-width: 100%;
+  }
+  .msg {
+    font-size: 1.1rem;
+    max-width: 85%;
+    padding: 0.75rem 1rem;
+  }
+  .narrator {
+    font-size: 1rem;
+    max-width: 90%;
+  }
+  .name-tag {
+    font-size: 0.85rem;
+  }
+  #next-btn {
+    font-size: 1rem;
+    padding: 0.6rem 1.5rem;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+  .avatar-wrap {
+    width: 45px;
+  }
+}</style>
 </head>
 <body>
 <audio id="bgm" autoplay loop>
@@ -241,7 +271,6 @@
       { sender: 'player', text: '這傢伙算熱情嗎？臉上毫無笑意啊！' },
       { sender: 'painter', text: '別被表情蒙騙了！願意為一件事去花費精力或者...電力，這就足以說明她的熱誠！是的，我能感受得到她的熾熱心跳！' },
       { sender: 'ai', text: '但我沒有心臟？' },
-      { sender: 'ai', text: '？？？' },
       { sender: 'painter', text: '這就是藝術家啊！想像力可是能突破宇宙法則的！來吧，讓我們一起完成這個承載人類記憶的藝術品吧！' },
       { sender: 'player', text: '但照片上的維納斯沒有雙手耶' },
       { sender: 'painter', text: '這就是樂趣所在了，這個留白，反而能發揮各種創意呢！不如...機器人小姐，你選擇一個手臂姿勢如何？' },
@@ -447,7 +476,7 @@ for (const role in colorMap) {
   `;
   document.head.appendChild(style);
 }
-     window.onload = () => {
+  window.onload = () => {
   nextStep();
 };
 </script>
