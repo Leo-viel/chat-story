@@ -4,12 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>自製音樂播放器</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
     <div class="player">
         <h1>我的音樂播放器</h1>
         <audio id="audio-player" controls></audio>
+        <div id="current-song" class="current-song">
+            <p>當前播放：<span id="song-title">無</span></p>
+        </div>
+        <div class="upload-section">
+            <h2>上傳音樂</h2>
+            <input type="file" id="file-input" accept="audio/*" multiple>
+        </div>
         <div class="playlist-section">
             <h2>播放列表</h2>
             <ul id="playlist"></ul>
@@ -18,12 +25,12 @@
             <h2>分類</h2>
             <select id="category-filter">
                 <option value="all">全部</option>
-                <option value="電子人">電子人</option>
+                <option value="pop">流行</option>
                 <option value="rock">搖滾</option>
                 <option value="classical">古典</option>
             </select>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script src="./script.js"></script>
 </body>
 </html>

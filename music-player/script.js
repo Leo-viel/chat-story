@@ -16,6 +16,8 @@ const musicList = [
 const audioPlayer = document.getElementById("audio-player");
 const playlist = document.getElementById("playlist");
 const categoryFilter = document.getElementById("category-filter");
+const fileInput = document.getElementById("file-input");
+const songTitle = document.getElementById("song-title");
 let currentIndex = 0;
 
 function loadPlaylist(category = "all") {
@@ -39,6 +41,8 @@ function playSong(index, list = musicList) {
     currentIndex = index;
     audioPlayer.src = list[index].src;
     audioPlayer.play();
+    // 更新當前曲名
+    songTitle.textContent = `${list[index].title} (${list[index].category})`;
 }
 
 audioPlayer.onended = () => {
@@ -51,11 +55,27 @@ audioPlayer.onended = () => {
     } else {
         currentIndex = 0;
         audioPlayer.pause();
+        songTitle.textContent = "無"; // 播放結束時重置
     }
 };
 
 categoryFilter.addEventListener("change", (e) => {
     loadPlaylist(e.target.value);
+});
+
+fileInput.addEventListener("change", (e) => {
+    const files = e.target.files;
+    for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const url = URL.createObjectURL(file);
+        const newSong = {
+            title: file.name.replace(/\.[^/.]+$/, ""),
+            src: url,
+            category: "local"
+        };
+        musicList.push(newSong);
+    }
+    loadPlaylist(categoryFilter.value);
 });
 
 function enableDragAndDrop(list) {

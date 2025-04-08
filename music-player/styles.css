@@ -21,7 +21,18 @@ audio {
     margin: 10px 0;
 }
 
-.playlist-section, .category-section {
+.current-song {
+    margin: 10px 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.current-song span {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.upload-section, .playlist-section, .category-section {
     margin-top: 20px;
 }
 
@@ -70,7 +81,7 @@ li.drop-target-bottom::before {
     bottom: -2px;
 }
 
-select {
+select, input[type="file"] {
     padding: 5px;
     font-size: 16px;
 }
