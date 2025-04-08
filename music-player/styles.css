@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    margin: 0;
+}
+
+.player {
+    width: 400px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+audio {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.playlist-section, .category-section {
+    margin-top: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 10px;
+    background: #f9f9f9;
+    margin: 5px 0;
+    cursor: move;
+    border: 1px solid #ddd;
+    transition: background 0.2s, transform 0.1s;
+    position: relative;
+}
+
+li:hover {
+    background: #e0e0e0;
+}
+
+li:active {
+    transform: scale(0.98);
+}
+
+li.dragging {
+    opacity: 0.5;
+    background: #d0d0d0;
+    z-index: 10;
+}
+
+li.drop-target::before {
+    content: "";
+    display: block;
+    height: 3px;
+    background: #007bff;
+    position: absolute;
+    width: 100%;
+    top: -2px;
+    left: 0;
+}
+
+li.drop-target-bottom::before {
+    top: auto;
+    bottom: -2px;
+}
+
+select {
+    padding: 5px;
+    font-size: 16px;
+}
