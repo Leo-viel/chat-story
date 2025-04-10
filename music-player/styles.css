@@ -9,6 +9,7 @@ body {
 }
 
 .player {
+    max-width: 100%;
     width: 400px;
     padding: 20px;
     background: white;
