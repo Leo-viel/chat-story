@@ -11,6 +11,10 @@ const musicList = [
     { title: "電子人-電子網域", src: "https://filedn.eu/lvSkeQUjKFT4wzjTm5E9GNH/MUSIC/%E9%9B%BB%E5%AD%90%E4%BA%BA-%E9%9B%BB%E5%AD%90%E7%B6%B2%E5%9F%9F.wav", category: "電子人" },
     { title: "電子人-電子戰", src: "https://filedn.eu/lvSkeQUjKFT4wzjTm5E9GNH/MUSIC/%E9%9B%BB%E5%AD%90%E4%BA%BA-%E9%9B%BB%E5%AD%90%E6%88%B0.wav", category: "電子人" },
     { title: "電子人-舊型的極限", src: "https://filedn.eu/lvSkeQUjKFT4wzjTm5E9GNH/MUSIC/%E9%9B%BB%E5%AD%90%E4%BA%BA-%E8%88%8A%E5%9E%8B%E7%9A%84%E6%A5%B5%E9%99%90.wav", category: "電子人" },
+    { title: "死靈少女-插曲1", src: "https://filedn.eu/lvSkeQUjKFT4wzjTm5E9GNH/MUSIC/%E6%AD%BB%E9%9D%88%E5%B0%91%E5%A5%B3_%E5%A5%B3%E8%81%B22%20(Cover)%20(full)_%E4%B8%AD%E6%96%873_2.wav", category: "電子人" },
+    { title: "死靈少女-插曲2", src: "https://filedn.eu/lvSkeQUjKFT4wzjTm5E9GNH/MUSIC/%E6%AD%BB%E9%9D%88%E5%B0%91%E5%A5%B3_%E5%A5%B3%E8%81%B22%20(Cover)%20(full)_%E4%B8%AD%E6%96%873_3.wav", category: "電子人" },
+    { title: "死靈少女-插曲3", src: "https://filedn.eu/lvSkeQUjKFT4wzjTm5E9GNH/MUSIC/%E6%AD%BB%E9%9D%88%E5%B0%91%E5%A5%B3_%E5%A5%B3%E8%81%B22%20(Cover)%20(full)_%E4%B8%AD%E6%96%873_4.wav", category: "電子人" },
+    { title: "死靈少女-插曲4", src: "https://filedn.eu/lvSkeQUjKFT4wzjTm5E9GNH/MUSIC/%E6%AD%BB%E9%9D%88%E5%B0%91%E5%A5%B3_%E5%A5%B3%E8%81%B22%20(Cover)%20(full)_%E4%B8%AD%E6%96%873_6.wav", category: "電子人" },
 ];
 
 const audioPlayer = document.getElementById("audio-player");
